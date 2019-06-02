@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bighouse.mapper.UsersMapper">
+    <resultMap id="BaseResultMap" type="com.bighouse.pojo.User">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="face_image" jdbcType="VARCHAR" property="faceImage"/>
+        <result column="face_image_big" jdbcType="VARCHAR" property="faceImageBig"/>
+        <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+        <result column="qrcode" jdbcType="VARCHAR" property="qrcode"/>
+        <result column="cid" jdbcType="VARCHAR" property="cid"/>
+    </resultMap>
+
+    <select id="userIsExist" resultType="int">
+        SELECT COUNT(id) FROM users WHERE username = #{username}
+    </select>
+
+    <select id="getUserByUsernamePsw" resultMap="BaseResultMap">
+        SELECT id
+        ,username
+        ,password
+        ,face_image
+        ,face_image_big
+        ,nickname
+        ,qrcode
+        ,cid
+        FROM users
+        WHERE username = #{username}
+        AND password = #{password}
+    </select>
+
+    <insert id="saveUser" parameterType="com.bighouse.pojo.User">
+        INSERT INTO
+        users
+        VALUES(
+        #{id}
+        ,#{username}
+        ,#{password}
+        ,#{faceImage}
+        ,#{faceImageBig}
+        ,#{nickname}
+        ,#{qrcode}
+        ,#{cid}
+        )
+    </insert>
+</mapper>
