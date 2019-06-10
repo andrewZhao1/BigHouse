@@ -1,10 +1,14 @@
 package com.bighouse.controller;
 
 import com.bighouse.pojo.User;
-import com.bighouse.pojo.vo.Uservo;
+import com.bighouse.pojo.bo.UserBO;
+import com.bighouse.pojo.vo.UserVO;
 import com.bighouse.service.UserService;
 import com.bighouse.utils.BigHouseJSONResult;
 import com.bighouse.utils.MD5Utils;
+import com.github.tobato.fastdfs.domain.fdfs.StorePath;
+import com.github.tobato.fastdfs.domain.fdfs.ThumbImageConfig;
+import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -13,12 +17,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 @RestController
 @RequestMapping("u")
 public class UserController {
 
     @Autowired
     private UserService service;
+
+    @Autowired
+    private FastFileStorageClient storageClient;
+
+    @Autowired
+    private ThumbImageConfig thumbImageConfig;
+
+//    @Autowired
+//    private FastDFSClient fastDFSClient;
 
     @PostMapping("/registerOrLogin")
     public BigHouseJSONResult registerOrLogin(@RequestBody User user) throws Exception {
@@ -29,7 +46,7 @@ public class UserController {
 
         boolean isExist = service.userIsExist(user.getUsername());
 
-        User result = null;
+        User result;
         if (isExist) {
             //登录
             result = service.getUserByUsernamePsw(user.getUsername(), MD5Utils.getMD5Str(user.getPassword()));
@@ -44,9 +61,41 @@ public class UserController {
             user.setPassword(MD5Utils.getMD5Str(user.getPassword()));
             result = service.saveUser(user);
         }
-        Uservo uservo = new Uservo();
-        BeanUtils.copyProperties(result,uservo);
+        UserVO uservo = new UserVO();
+        BeanUtils.copyProperties(result, uservo);
 
         return BigHouseJSONResult.ok(uservo);
+    }
+
+    @PostMapping("/uploadFaceBase64")
+    public BigHouseJSONResult uploadFaceBase64(@RequestBody UserBO userbo) throws Exception {
+
+//        String base64Data = userbo.getFaceData();
+        String userFacePath = "/Users/zhaojunhua/work/workspace/localIMG/" + userbo.getUserId() + "userface64.png";
+
+//        File file = new File("/Users/zhaojunhua/work/workspace/localIMG/WechatIMG1.jpg");
+        File file = new File(userFacePath);
+        // 上传并且生成缩略图
+        StorePath storePath = new StorePath();
+        try {
+            storePath = this.storageClient.uploadImageAndCrtThumbImage(
+                    new FileInputStream(file), file.length(), "png", null);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        // 带分组的路径
+        String url = storePath.getFullPath();
+        // 不带分组的路径
+//        storePath.getPath();
+        // 获取缩略图路径
+        String path = thumbImageConfig.getThumbImagePath(storePath.getPath());
+
+        User user = new User();
+        user.setId(userbo.getUserId());
+        user.setFaceImage(path);
+        user.setFaceImageBig(url);
+//        service.updateUserImage(user);
+
+        return BigHouseJSONResult.ok(service.updateUserImage(user));
     }
 }

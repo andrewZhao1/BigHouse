@@ -1,6 +1,6 @@
 package com.bighouse.pojo.vo;
 
-public class Uservo {
+public class UserVO {
     private String id;
     private String username;
     private String faceImage;

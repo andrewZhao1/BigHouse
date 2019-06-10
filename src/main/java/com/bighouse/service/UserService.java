@@ -4,6 +4,12 @@ import com.bighouse.pojo.User;
 
 public interface UserService {
     boolean userIsExist(String username);
+
     User getUserByUsernamePsw(String username, String password);
+
     User saveUser(User user);
+
+    User updateUserImage(User user);
+
+    User getUserById(String id);
 }
