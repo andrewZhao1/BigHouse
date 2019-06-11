@@ -13,4 +13,6 @@ public interface UsersMapper {
     void updateUserImage(User user);
 
     User getUserById(String id);
+
+    void updateUserNickName(User user);
 }

@@ -1,3 +1,6 @@
+server:
+  port: 8080
+
 mybatis:
   config-location: classpath:mybatis.cfg.xml
   type-aliases-package: com.bighouse.pojo

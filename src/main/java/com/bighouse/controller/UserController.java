@@ -5,6 +5,7 @@ import com.bighouse.pojo.bo.UserBO;
 import com.bighouse.pojo.vo.UserVO;
 import com.bighouse.service.UserService;
 import com.bighouse.utils.BigHouseJSONResult;
+import com.bighouse.utils.FileUtils;
 import com.bighouse.utils.MD5Utils;
 import com.github.tobato.fastdfs.domain.fdfs.StorePath;
 import com.github.tobato.fastdfs.domain.fdfs.ThumbImageConfig;
@@ -27,9 +28,6 @@ public class UserController {
 
     @Autowired
     private UserService service;
-
-    @Autowired
-    private FastFileStorageClient storageClient;
 
     @Autowired
     private ThumbImageConfig thumbImageConfig;
@@ -61,41 +59,36 @@ public class UserController {
             user.setPassword(MD5Utils.getMD5Str(user.getPassword()));
             result = service.saveUser(user);
         }
-        UserVO uservo = new UserVO();
-        BeanUtils.copyProperties(result, uservo);
 
-        return BigHouseJSONResult.ok(uservo);
+        return BigHouseJSONResult.ok(result);
     }
 
     @PostMapping("/uploadFaceBase64")
-    public BigHouseJSONResult uploadFaceBase64(@RequestBody UserBO userbo) throws Exception {
+    public BigHouseJSONResult uploadFaceBase64(@RequestBody UserBO userBO) throws Exception {
 
-//        String base64Data = userbo.getFaceData();
-        String userFacePath = "/Users/zhaojunhua/work/workspace/localIMG/" + userbo.getUserId() + "userface64.png";
-
-//        File file = new File("/Users/zhaojunhua/work/workspace/localIMG/WechatIMG1.jpg");
-        File file = new File(userFacePath);
-        // 上传并且生成缩略图
-        StorePath storePath = new StorePath();
-        try {
-            storePath = this.storageClient.uploadImageAndCrtThumbImage(
-                    new FileInputStream(file), file.length(), "png", null);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        StorePath storePath = service.uploadFaceImg(userBO);
         // 带分组的路径
-        String url = storePath.getFullPath();
+//        String url = storePath.getFullPath();
         // 不带分组的路径
-//        storePath.getPath();
+        String url = storePath.getPath();
         // 获取缩略图路径
         String path = thumbImageConfig.getThumbImagePath(storePath.getPath());
 
         User user = new User();
-        user.setId(userbo.getUserId());
+        user.setId(userBO.getUserId());
         user.setFaceImage(path);
         user.setFaceImageBig(url);
-//        service.updateUserImage(user);
 
         return BigHouseJSONResult.ok(service.updateUserImage(user));
     }
+
+    @PostMapping("/setNickname")
+    public BigHouseJSONResult setNickName(@RequestBody UserBO userBO) {
+
+        User user = new User();
+        user.setId(userBO.getUserId());
+        user.setNickname(userBO.getNickname());
+        return BigHouseJSONResult.ok(service.updateUserNickName(user));
+    }
+
 }

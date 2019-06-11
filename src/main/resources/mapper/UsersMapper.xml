@@ -65,4 +65,12 @@
         FROM users
         WHERE id = #{id}
     </select>
+    <update id="updateUserNickName" parameterType="com.bighouse.pojo.User">
+        UPDATE
+        users
+        SET
+        nickname = #{nickname}
+        WHERE
+        id = #{id}
+    </update>
 </mapper>
