@@ -9,30 +9,32 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class WSServer {
-    private static class SingletionWSServer {
-        static final WSServer instance = new WSServer();
-    }
 
-    public static WSServer getInstance() {
-        return SingletionWSServer.instance;
-    }
+  private static class SingletionWSServer {
 
-    private EventLoopGroup mainGroup;
-    private EventLoopGroup subGroup;
-    private ServerBootstrap serverBootstrap;
-    private ChannelFuture future;
+    static final WSServer instance = new WSServer();
+  }
 
-    private WSServer() {
-        mainGroup = new NioEventLoopGroup();
-        subGroup = new NioEventLoopGroup();
-        serverBootstrap = new ServerBootstrap();
-        serverBootstrap.group(mainGroup, subGroup)
-                .channel(NioServerSocketChannel.class)
-                .childHandler(new WSServerInitializer());
-    }
+  public static WSServer getInstance() {
+    return SingletionWSServer.instance;
+  }
 
-    public void start() {
-        this.future = serverBootstrap.bind(8088);
-        System.out.println("netty websocket server 启动完毕...");
-    }
+  private EventLoopGroup mainGroup;
+  private EventLoopGroup subGroup;
+  private ServerBootstrap serverBootstrap;
+  private ChannelFuture future;
+
+  private WSServer() {
+    mainGroup = new NioEventLoopGroup();
+    subGroup = new NioEventLoopGroup();
+    serverBootstrap = new ServerBootstrap();
+    serverBootstrap.group(mainGroup, subGroup)
+        .channel(NioServerSocketChannel.class)
+        .childHandler(new WSServerInitializer());
+  }
+
+  public void start() {
+    this.future = serverBootstrap.bind(8088);
+    System.out.println("netty websocket server 启动完毕...");
+  }
 }

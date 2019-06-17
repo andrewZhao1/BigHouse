@@ -10,8 +10,8 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages = {"com.bighouse", "org.n3r.idworker"})
 public class MessageGroupApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(MessageGroupApplication.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(MessageGroupApplication.class, args);
+  }
 
 }

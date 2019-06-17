@@ -1,76 +1,77 @@
 package com.bighouse.pojo;
 
 public class User {
-    private String id;
-    private String username;
-    private String password;
-    private String faceImage;
-    private String faceImageBig;
-    private String nickname;
-    private String qrcode;
-    private String cid;
 
-    public String getId() {
-        return id;
-    }
+  private String id;
+  private String username;
+  private String password;
+  private String faceImage;
+  private String faceImageBig;
+  private String nickname;
+  private String qrcode;
+  private String cid;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+  public String getId() {
+    return id;
+  }
 
-    public String getUsername() {
-        return username;
-    }
+  public void setId(String id) {
+    this.id = id;
+  }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+  public String getUsername() {
+    return username;
+  }
 
-    public String getPassword() {
-        return password;
-    }
+  public void setUsername(String username) {
+    this.username = username;
+  }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+  public String getPassword() {
+    return password;
+  }
 
-    public String getFaceImage() {
-        return faceImage;
-    }
+  public void setPassword(String password) {
+    this.password = password;
+  }
 
-    public void setFaceImage(String faceImage) {
-        this.faceImage = faceImage;
-    }
+  public String getFaceImage() {
+    return faceImage;
+  }
 
-    public String getFaceImageBig() {
-        return faceImageBig;
-    }
+  public void setFaceImage(String faceImage) {
+    this.faceImage = faceImage;
+  }
 
-    public void setFaceImageBig(String faceImageBig) {
-        this.faceImageBig = faceImageBig;
-    }
+  public String getFaceImageBig() {
+    return faceImageBig;
+  }
 
-    public String getNickname() {
-        return nickname;
-    }
+  public void setFaceImageBig(String faceImageBig) {
+    this.faceImageBig = faceImageBig;
+  }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
+  public String getNickname() {
+    return nickname;
+  }
 
-    public String getQrcode() {
-        return qrcode;
-    }
+  public void setNickname(String nickname) {
+    this.nickname = nickname;
+  }
 
-    public void setQrcode(String qrcode) {
-        this.qrcode = qrcode;
-    }
+  public String getQrcode() {
+    return qrcode;
+  }
 
-    public String getCid() {
-        return cid;
-    }
+  public void setQrcode(String qrcode) {
+    this.qrcode = qrcode;
+  }
 
-    public void setCid(String cid) {
-        this.cid = cid;
-    }
+  public String getCid() {
+    return cid;
+  }
+
+  public void setCid(String cid) {
+    this.cid = cid;
+  }
 }

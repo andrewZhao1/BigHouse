@@ -4,15 +4,16 @@ import com.bighouse.pojo.User;
 
 //@Mapper
 public interface UsersMapper {
-    int userIsExist(String username);
 
-    User getUserByUsernamePsw(String username, String password);
+  User getUserByUsername(String username);
 
-    void saveUser(User user);
+  User getUserByUsernamePsw(String username, String password);
 
-    void updateUserImage(User user);
+  void saveUser(User user);
 
-    User getUserById(String id);
+  void updateUserImage(User user);
 
-    void updateUserNickName(User user);
+  User getUserById(String id);
+
+  void updateUserNickName(User user);
 }

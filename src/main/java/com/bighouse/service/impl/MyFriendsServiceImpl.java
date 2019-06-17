@@ -11,11 +11,17 @@ import java.util.List;
 @Service
 public class MyFriendsServiceImpl implements MyFriendsService {
 
-    @Autowired
-    private MyFriendsMapper mapper;
+  @Autowired
+  private MyFriendsMapper mapper;
 
-    @Override
-    public List<MyFriends> selectAll() {
-        return mapper.selectAll();
-    }
+  @Override
+  public List<MyFriends> selectAll() {
+    return mapper.selectAll();
+  }
+
+  @Override
+  public List<String> getMyFriendIds(String userId) {
+
+    return mapper.getMyFriendIds(userId);
+  }
 }

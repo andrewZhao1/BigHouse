@@ -1,58 +1,59 @@
 package com.bighouse.pojo;
 
 public class ChatMsg {
-    private String id;
-    private String sendUserId;
-    private String acceptUserId;
-    private String msg;
-    private Integer signFlag;
-    private Integer createTime;
 
-    public String getId() {
-        return id;
-    }
+  private String id;
+  private String sendUserId;
+  private String acceptUserId;
+  private String msg;
+  private Integer signFlag;
+  private Integer createTime;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+  public String getId() {
+    return id;
+  }
 
-    public String getSendUserId() {
-        return sendUserId;
-    }
+  public void setId(String id) {
+    this.id = id;
+  }
 
-    public void setSendUserId(String sendUserId) {
-        this.sendUserId = sendUserId;
-    }
+  public String getSendUserId() {
+    return sendUserId;
+  }
 
-    public String getAcceptUserId() {
-        return acceptUserId;
-    }
+  public void setSendUserId(String sendUserId) {
+    this.sendUserId = sendUserId;
+  }
 
-    public void setAcceptUserId(String acceptUserId) {
-        this.acceptUserId = acceptUserId;
-    }
+  public String getAcceptUserId() {
+    return acceptUserId;
+  }
 
-    public String getMsg() {
-        return msg;
-    }
+  public void setAcceptUserId(String acceptUserId) {
+    this.acceptUserId = acceptUserId;
+  }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
+  public String getMsg() {
+    return msg;
+  }
 
-    public Integer getSignFlag() {
-        return signFlag;
-    }
+  public void setMsg(String msg) {
+    this.msg = msg;
+  }
 
-    public void setSignFlag(Integer signFlag) {
-        this.signFlag = signFlag;
-    }
+  public Integer getSignFlag() {
+    return signFlag;
+  }
 
-    public Integer getCreateTime() {
-        return createTime;
-    }
+  public void setSignFlag(Integer signFlag) {
+    this.signFlag = signFlag;
+  }
 
-    public void setCreateTime(Integer createTime) {
-        this.createTime = createTime;
-    }
+  public Integer getCreateTime() {
+    return createTime;
+  }
+
+  public void setCreateTime(Integer createTime) {
+    this.createTime = createTime;
+  }
 }

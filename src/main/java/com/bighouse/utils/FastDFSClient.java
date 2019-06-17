@@ -20,70 +20,71 @@ import java.nio.charset.Charset;
 @Component
 public class FastDFSClient {
 
-    private final Logger logger = Logger.getLogger(FastDFSClient.class);
+  private final Logger logger = Logger.getLogger(FastDFSClient.class);
 
-    @Autowired
-    private FastFileStorageClient storageClient;
+  @Autowired
+  private FastFileStorageClient storageClient;
 
-    @Autowired
-    private FdfsWebServer fdfsWebServer;
+  @Autowired
+  private FdfsWebServer fdfsWebServer;
 
-    /**
-     * 上传文件
-     * @param file 文件对象
-     * @return 文件访问地址
-     * @throws IOException
-     */
-    public String uploadFile(MultipartFile file) throws IOException {
-        StorePath storePath = storageClient.uploadFile(file.getInputStream(),file.getSize(), FilenameUtils.getExtension(file.getOriginalFilename()),null);
-        return getResAccessUrl(storePath);
+  /**
+   * 上传文件
+   *
+   * @param file 文件对象
+   * @return 文件访问地址
+   */
+  public String uploadFile(MultipartFile file) throws IOException {
+    StorePath storePath = storageClient.uploadFile(file.getInputStream(), file.getSize(),
+        FilenameUtils.getExtension(file.getOriginalFilename()), null);
+    return getResAccessUrl(storePath);
+  }
+
+  /**
+   * 上传文件
+   *
+   * @param file 文件对象
+   * @return 文件访问地址
+   */
+  public String uploadFile(File file) throws IOException {
+    FileInputStream inputStream = new FileInputStream(file);
+    StorePath storePath = storageClient
+        .uploadFile(inputStream, file.length(), FilenameUtils.getExtension(file.getName()), null);
+    return getResAccessUrl(storePath);
+  }
+
+  /**
+   * 将一段字符串生成一个文件上传
+   *
+   * @param content 文件内容
+   */
+  public String uploadFile(String content, String fileExtension) {
+    byte[] buff = content.getBytes(Charset.forName("UTF-8"));
+    ByteArrayInputStream stream = new ByteArrayInputStream(buff);
+    StorePath storePath = storageClient.uploadFile(stream, buff.length, fileExtension, null);
+    return getResAccessUrl(storePath);
+  }
+
+  // 封装图片完整URL地址
+  private String getResAccessUrl(StorePath storePath) {
+    String fileUrl = fdfsWebServer.getWebServerUrl() + storePath.getFullPath();
+    return fileUrl;
+  }
+
+  /**
+   * 删除文件
+   *
+   * @param fileUrl 文件访问地址
+   */
+  public void deleteFile(String fileUrl) {
+    if (StringUtils.isEmpty(fileUrl)) {
+      return;
     }
-
-    /**
-     * 上传文件
-     * @param file 文件对象
-     * @return 文件访问地址
-     * @throws IOException
-     */
-    public String uploadFile(File file) throws IOException {
-        FileInputStream inputStream = new FileInputStream (file);
-        StorePath storePath = storageClient.uploadFile(inputStream,file.length(), FilenameUtils.getExtension(file.getName()),null);
-        return getResAccessUrl(storePath);
+    try {
+      StorePath storePath = StorePath.parseFromUrl(fileUrl);
+      storageClient.deleteFile(storePath.getGroup(), storePath.getPath());
+    } catch (FdfsUnsupportStorePathException e) {
+      logger.warn(e.getMessage());
     }
-
-    /**
-     * 将一段字符串生成一个文件上传
-     * @param content 文件内容
-     * @param fileExtension
-     * @return
-     */
-    public String uploadFile(String content, String fileExtension) {
-        byte[] buff = content.getBytes(Charset.forName("UTF-8"));
-        ByteArrayInputStream stream = new ByteArrayInputStream(buff);
-        StorePath storePath = storageClient.uploadFile(stream,buff.length, fileExtension,null);
-        return getResAccessUrl(storePath);
-    }
-
-    // 封装图片完整URL地址
-    private String getResAccessUrl(StorePath storePath) {
-        String fileUrl = fdfsWebServer.getWebServerUrl() + storePath.getFullPath();
-        return fileUrl;
-    }
-
-    /**
-     * 删除文件
-     * @param fileUrl 文件访问地址
-     * @return
-     */
-    public void deleteFile(String fileUrl) {
-        if (StringUtils.isEmpty(fileUrl)) {
-            return;
-        }
-        try {
-            StorePath storePath = StorePath.parseFromUrl(fileUrl);
-            storageClient.deleteFile(storePath.getGroup(), storePath.getPath());
-        } catch (FdfsUnsupportStorePathException e) {
-            logger.warn(e.getMessage());
-        }
-    }
+  }
 }

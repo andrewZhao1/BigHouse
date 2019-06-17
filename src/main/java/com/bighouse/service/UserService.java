@@ -4,20 +4,19 @@ import com.bighouse.pojo.User;
 import com.bighouse.pojo.bo.UserBO;
 import com.github.tobato.fastdfs.domain.fdfs.StorePath;
 
-import java.io.FileNotFoundException;
-
 public interface UserService {
-    boolean userIsExist(String username);
 
-    User getUserByUsernamePsw(String username, String password);
+  User getUserByUsername(String username);
 
-    User saveUser(User user) throws FileNotFoundException, Exception;
+  User getUserByUsernamePsw(String username, String password);
 
-    User updateUserImage(User user);
+  User saveUser(User user) throws Exception;
 
-    User getUserById(String id);
+  User updateUserImage(User user);
 
-    User updateUserNickName(User user);
+  User getUserById(String id);
 
-    StorePath uploadFaceImg(UserBO userBO) throws Exception;
+  User updateUserNickName(User user);
+
+  StorePath uploadFaceImg(UserBO userBO) throws Exception;
 }

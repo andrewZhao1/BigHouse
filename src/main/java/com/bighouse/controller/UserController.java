@@ -26,69 +26,70 @@ import java.io.FileNotFoundException;
 @RequestMapping("u")
 public class UserController {
 
-    @Autowired
-    private UserService service;
+  @Autowired
+  private UserService service;
 
-    @Autowired
-    private ThumbImageConfig thumbImageConfig;
+  @Autowired
+  private ThumbImageConfig thumbImageConfig;
 
 //    @Autowired
 //    private FastDFSClient fastDFSClient;
 
-    @PostMapping("/registerOrLogin")
-    public BigHouseJSONResult registerOrLogin(@RequestBody User user) throws Exception {
+  @PostMapping("/registerOrLogin")
+  public BigHouseJSONResult registerOrLogin(@RequestBody User user) throws Exception {
 
-        if (StringUtils.isEmpty(user.getUsername()) || StringUtils.isEmpty(user.getPassword())) {
-            return BigHouseJSONResult.errorMsg("用户名或密码不能为空...");
-        }
-
-        boolean isExist = service.userIsExist(user.getUsername());
-
-        User result;
-        if (isExist) {
-            //登录
-            result = service.getUserByUsernamePsw(user.getUsername(), MD5Utils.getMD5Str(user.getPassword()));
-            if (result == null) {
-                return BigHouseJSONResult.errorMsg("用户名或密码不正确...");
-            }
-        } else {
-            //注册
-            user.setNickname(user.getUsername());
-            user.setFaceImage("");
-            user.setFaceImageBig("");
-            user.setPassword(MD5Utils.getMD5Str(user.getPassword()));
-            result = service.saveUser(user);
-        }
-
-        return BigHouseJSONResult.ok(result);
+    if (StringUtils.isEmpty(user.getUsername()) || StringUtils.isEmpty(user.getPassword())) {
+      return BigHouseJSONResult.errorMsg("用户名或密码不能为空...");
     }
 
-    @PostMapping("/uploadFaceBase64")
-    public BigHouseJSONResult uploadFaceBase64(@RequestBody UserBO userBO) throws Exception {
+    User findUser = service.getUserByUsername(user.getUsername());
 
-        StorePath storePath = service.uploadFaceImg(userBO);
-        // 带分组的路径
+    User result;
+    if (findUser != null) {
+      //登录
+      result = service
+          .getUserByUsernamePsw(user.getUsername(), MD5Utils.getMD5Str(user.getPassword()));
+      if (result == null) {
+        return BigHouseJSONResult.errorMsg("用户名或密码不正确...");
+      }
+    } else {
+      //注册
+      user.setNickname(user.getUsername());
+      user.setFaceImage("");
+      user.setFaceImageBig("");
+      user.setPassword(MD5Utils.getMD5Str(user.getPassword()));
+      result = service.saveUser(user);
+    }
+
+    return BigHouseJSONResult.ok(result);
+  }
+
+  @PostMapping("/uploadFaceBase64")
+  public BigHouseJSONResult uploadFaceBase64(@RequestBody UserBO userBO) throws Exception {
+
+    StorePath storePath = service.uploadFaceImg(userBO);
+    // 带分组的路径
 //        String url = storePath.getFullPath();
-        // 不带分组的路径
-        String url = storePath.getPath();
-        // 获取缩略图路径
-        String path = thumbImageConfig.getThumbImagePath(storePath.getPath());
+    // 不带分组的路径
+    String url = storePath.getPath();
+    // 获取缩略图路径
+    String path = thumbImageConfig.getThumbImagePath(storePath.getPath());
 
-        User user = new User();
-        user.setId(userBO.getUserId());
-        user.setFaceImage(path);
-        user.setFaceImageBig(url);
+    User user = new User();
+    user.setId(userBO.getUserId());
+    user.setFaceImage(path);
+    user.setFaceImageBig(url);
 
-        return BigHouseJSONResult.ok(service.updateUserImage(user));
-    }
+    return BigHouseJSONResult.ok(service.updateUserImage(user));
+  }
 
-    @PostMapping("/setNickname")
-    public BigHouseJSONResult setNickName(@RequestBody UserBO userBO) {
+  @PostMapping("/setNickname")
+  public BigHouseJSONResult setNickName(@RequestBody UserBO userBO) {
 
-        User user = new User();
-        user.setId(userBO.getUserId());
-        user.setNickname(userBO.getNickname());
-        return BigHouseJSONResult.ok(service.updateUserNickName(user));
-    }
+    User user = new User();
+    user.setId(userBO.getUserId());
+    user.setNickname(userBO.getNickname());
+    return BigHouseJSONResult.ok(service.updateUserNickName(user));
+  }
 
 }

@@ -1,31 +1,32 @@
 package com.bighouse.pojo.bo;
 
 public class UserBO {
-    private String userId;
-    private String faceData;
-    private String nickname;
 
-    public String getUserId() {
-        return userId;
-    }
+  private String userId;
+  private String faceData;
+  private String nickname;
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+  public String getUserId() {
+    return userId;
+  }
 
-    public String getFaceData() {
-        return faceData;
-    }
+  public void setUserId(String userId) {
+    this.userId = userId;
+  }
 
-    public void setFaceData(String faceData) {
-        this.faceData = faceData;
-    }
+  public String getFaceData() {
+    return faceData;
+  }
 
-    public String getNickname() {
-        return nickname;
-    }
+  public void setFaceData(String faceData) {
+    this.faceData = faceData;
+  }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
+  public String getNickname() {
+    return nickname;
+  }
+
+  public void setNickname(String nickname) {
+    this.nickname = nickname;
+  }
 }

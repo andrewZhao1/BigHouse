@@ -8,12 +8,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class NettyBooter implements ApplicationRunner {
 
-    @Override
-    public void run(ApplicationArguments args) {
-        try {
-            WSServer.getInstance().start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+  @Override
+  public void run(ApplicationArguments args) {
+    try {
+      WSServer.getInstance().start();
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+  }
 }

@@ -2,31 +2,32 @@ package com.bighouse.pojo;
 
 
 public class MyFriends {
-    private String id;
-    private String myUserId;
-    private String myFriendUserId;
 
-    public String getId() {
-        return id;
-    }
+  private String id;
+  private String myUserId;
+  private String myFriendUserId;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+  public String getId() {
+    return id;
+  }
 
-    public String getMyUserId() {
-        return myUserId;
-    }
+  public void setId(String id) {
+    this.id = id;
+  }
 
-    public void setMyUserId(String myUserId) {
-        this.myUserId = myUserId;
-    }
+  public String getMyUserId() {
+    return myUserId;
+  }
 
-    public String getMyFriendUserId() {
-        return myFriendUserId;
-    }
+  public void setMyUserId(String myUserId) {
+    this.myUserId = myUserId;
+  }
 
-    public void setMyFriendUserId(String myFriendUserId) {
-        this.myFriendUserId = myFriendUserId;
-    }
+  public String getMyFriendUserId() {
+    return myFriendUserId;
+  }
+
+  public void setMyFriendUserId(String myFriendUserId) {
+    this.myFriendUserId = myFriendUserId;
+  }
 }
